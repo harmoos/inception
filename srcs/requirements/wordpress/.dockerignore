@@ -1,0 +1,9 @@
+.git
+.gitignore
+.dockerignore
+Makefile
+**/secrets/*
+**/.env
+*.key
+*.crt
+*.tmp

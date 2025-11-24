@@ -1,0 +1,25 @@
+
+all: up
+up: build
+	@mkdir -p $(HOME)/data/wordpress
+	@mkdir -p $(HOME)/data/mariadb
+	docker compose -f ./srcs/docker-compose.yml up -d
+down:
+	docker compose -f ./srcs/docker-compose.yml down
+stop:
+	docker compose -f ./srcs/docker-compose.yml stop
+start:
+	docker compose -f ./srcs/docker-compose.yml start
+build:
+	docker compose -f ./srcs/docker-compose.yml build
+clean:
+	@docker stop $$(docker ps -qa) || true
+	@docker rm $$(docker ps -qa) || true
+	@docker rmi -f $$(docker images -qa) || true
+	@docker volume rm $$(docker volume ls -q) || true
+	@docker network rm $$(docker network ls -q) || true
+	@rm -rf $(HOME)/data/wordpress || true
+	@rm -rf $(HOME)/data/mariadb || true
+re: clean up
+prune: clean
+	@docker system prune -a --volumes -f
